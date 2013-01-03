@@ -189,10 +189,8 @@
            moveItemFromIndexPath:previousIndexPath
                      toIndexPath:selectedIndexPath];
         
-        [self.collectionView performBatchUpdates:^{
-            [self.collectionView deleteItemsAtIndexPaths:@[previousIndexPath]];
-            [self.collectionView insertItemsAtIndexPaths:@[selectedIndexPath]];
-        } completion:NULL];
+        [self.collectionView moveItemAtIndexPath:previousIndexPath
+                                     toIndexPath:selectedIndexPath];
         
         self.pressedCellPath = selectedIndexPath;
     }

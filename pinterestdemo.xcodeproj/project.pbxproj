@@ -51,10 +51,11 @@
 		34044D0B1694EB10004837C6 /* 239605642644595710_hgOTCxCE_f.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34044CF91694EB10004837C6 /* 239605642644595710_hgOTCxCE_f.jpg */; };
 		34044D0C1694EB10004837C6 /* 249809110550356714_E4d673hy_f.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34044CFA1694EB10004837C6 /* 249809110550356714_E4d673hy_f.jpg */; };
 		34044D0D1694EB10004837C6 /* 258323728595690846_IO4w7Mgq_f.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34044CFB1694EB10004837C6 /* 258323728595690846_IO4w7Mgq_f.jpg */; };
-		34044D1C16954ACD004837C6 /* BMStackLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34044D1B16954ACD004837C6 /* BMStackLayout.m */; };
 		34146C0C16956D6C002D3C40 /* navbar_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 34146C0B16956D6C002D3C40 /* navbar_gradient.png */; };
 		34146C0E16956DC1002D3C40 /* navbar_gradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34146C0D16956DC1002D3C40 /* navbar_gradient@2x.png */; };
 		34146C1C169570F2002D3C40 /* NSUserDefaults+BMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */; };
+		34146C271696049B002D3C40 /* BMScrollLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C261696049B002D3C40 /* BMScrollLayout.m */; };
+		34146C2A169604E5002D3C40 /* BMStackLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C29169604E5002D3C40 /* BMStackLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,13 +121,15 @@
 		34044CF91694EB10004837C6 /* 239605642644595710_hgOTCxCE_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 239605642644595710_hgOTCxCE_f.jpg; sourceTree = "<group>"; };
 		34044CFA1694EB10004837C6 /* 249809110550356714_E4d673hy_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 249809110550356714_E4d673hy_f.jpg; sourceTree = "<group>"; };
 		34044CFB1694EB10004837C6 /* 258323728595690846_IO4w7Mgq_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 258323728595690846_IO4w7Mgq_f.jpg; sourceTree = "<group>"; };
-		34044D1A16954ACC004837C6 /* BMStackLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMStackLayout.h; path = pinterestdemo/BMStackLayout.h; sourceTree = "<group>"; };
-		34044D1B16954ACD004837C6 /* BMStackLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMStackLayout.m; path = pinterestdemo/BMStackLayout.m; sourceTree = "<group>"; };
+		34044D1A16954ACC004837C6 /* BMScrollLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMScrollLayout.h; path = pinterestdemo/BMScrollLayout.h; sourceTree = "<group>"; };
 		34146C0B16956D6C002D3C40 /* navbar_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_gradient.png; sourceTree = "<group>"; };
 		34146C0D16956DC1002D3C40 /* navbar_gradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_gradient@2x.png"; sourceTree = "<group>"; };
 		34146C1A169570F2002D3C40 /* NSUserDefaults+BMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+BMAdditions.h"; sourceTree = "<group>"; };
 		34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+BMAdditions.m"; sourceTree = "<group>"; };
 		34146C21169578E4002D3C40 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
+		34146C261696049B002D3C40 /* BMScrollLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMScrollLayout.m; path = pinterestdemo/BMScrollLayout.m; sourceTree = "<group>"; };
+		34146C28169604E4002D3C40 /* BMStackLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMStackLayout.h; path = pinterestdemo/BMStackLayout.h; sourceTree = "<group>"; };
+		34146C29169604E5002D3C40 /* BMStackLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMStackLayout.m; path = pinterestdemo/BMStackLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,10 +306,12 @@
 		34146C1F16957298002D3C40 /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				34044D1A16954ACC004837C6 /* BMStackLayout.h */,
-				34044D1B16954ACD004837C6 /* BMStackLayout.m */,
+				34044D1A16954ACC004837C6 /* BMScrollLayout.h */,
+				34146C261696049B002D3C40 /* BMScrollLayout.m */,
 				34044CC316940461004837C6 /* BMGridLayout.h */,
 				34044CC416940461004837C6 /* BMGridLayout.m */,
+				34146C28169604E4002D3C40 /* BMStackLayout.h */,
+				34146C29169604E5002D3C40 /* BMStackLayout.m */,
 			);
 			name = Layouts;
 			path = ..;
@@ -423,8 +428,9 @@
 				34044CB31693E40D004837C6 /* BMGridViewController.m in Sources */,
 				34044CBA1693F467004837C6 /* BMGridCell.m in Sources */,
 				34044CC516940461004837C6 /* BMGridLayout.m in Sources */,
-				34044D1C16954ACD004837C6 /* BMStackLayout.m in Sources */,
 				34146C1C169570F2002D3C40 /* NSUserDefaults+BMAdditions.m in Sources */,
+				34146C271696049B002D3C40 /* BMScrollLayout.m in Sources */,
+				34146C2A169604E5002D3C40 /* BMStackLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

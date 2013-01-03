@@ -9,6 +9,7 @@
 #import "BMGridViewController.h"
 #import "BMGridCell.h"
 #import "BMPinModel.h"
+#import "BMScrollLayout.h"
 #import "BMStackLayout.h"
 #import <ImageIO/ImageIO.h> 
 #import <QuartzCore/QuartzCore.h>
@@ -178,16 +179,33 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     CFRelease(imageSource);
     
     // Return the image height scaled by the column width to maintain the correct aspect ratio.
-    // For the StackLayout, we take 95% of the available screen width as the column width.
-    CGFloat column_width = self.view.bounds.size.width * 0.95;
-    return CGSizeMake(column_width, height * column_width / width);
+    CGSize size;
+    if ([collectionViewLayout isKindOfClass:[BMScrollLayout class]]) {
+        // For the ScrollLayout, we take 90% of the available screen width as the column width.
+        CGFloat column_width = self.view.bounds.size.width * 0.9f;
+        size = CGSizeMake(column_width, height * column_width / width);
+    } else if ([collectionViewLayout isKindOfClass:[BMStackLayout class]]) {
+        // For the ScrollLayout, we take 90% of the available screen height and scale the width accordingly.
+        // If the image height is smaller than the screen height, use the actual image height instead.
+        CGFloat available_height = self.view.bounds.size.height * 0.9f;
+        available_height = MIN(height, available_height);
+        size = CGSizeMake(width * available_height / height, available_height);
+    }
+    
+    return size;
 }
 
 #pragma mark - Gesture recognizer handlers
 
 - (void)handleLongPressGesture:(UILongPressGestureRecognizer *)gr {
+    // Only handle long press gestures in the grid layout.
+    if (![self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+        return;
+    }
+    
     BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
     CGPoint touchPosition = [gr locationInView:self.collectionView];
+    
     
     if (gr.state == UIGestureRecognizerStateBegan) {
         NSIndexPath *selectedIndexPath = [self.collectionView indexPathForItemAtPoint:touchPosition];
@@ -292,7 +310,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         
         // Toggle back-and-forth between grid and stack layout
         if ([self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
-            // Switch to StackLayout, only on pinch out
+            // Switch to ScrollLayout, only on pinch out
             if (!pinchOut) {
                 return;
             }
@@ -302,8 +320,8 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             }
             [self.collectionView reloadData];
 
-            BMStackLayout *stackLayout = [[[BMStackLayout alloc] init] autorelease];
-            [self.collectionView setCollectionViewLayout:stackLayout animated:YES];
+            BMScrollLayout *scrollLayout = [[[BMScrollLayout alloc] init] autorelease];
+            [self.collectionView setCollectionViewLayout:scrollLayout animated:YES];
         } else {
             // Switch back to GridLayout (always cached), only on pinch in
             if (pinchOut) {
@@ -313,6 +331,23 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             [self loadData];
             [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
         }
+    }
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    
+    if ([collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+        // Show the stack layout
+        BMStackLayout *stackLayout = [[BMStackLayout alloc] init];
+        [self.collectionView setCollectionViewLayout:stackLayout animated:YES];
+        [stackLayout release];
+        
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    } else if ([collectionView.collectionViewLayout isKindOfClass:[BMStackLayout class]]) {
+        // Switch back to the grid layout
+        [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
     }
 }
 

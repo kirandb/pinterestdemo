@@ -79,8 +79,8 @@
 
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
-    UIColor *selectedColor = [UIColor colorWithWhite:0.5f alpha:1.f];
     
+    UIColor *selectedColor = [UIColor colorWithWhite:0.5f alpha:1.f];
     self.backgroundColor = selected ? selectedColor : [UIColor colorWithWhite:BACKCOLOR_WHITE alpha:1.f];
     self.alpha = selected ? 0.7f : 1.f;
 }
