@@ -7,6 +7,7 @@
 //
 
 #import "BMGridCell.h"
+#import "helpers.h"
 
 #define LABEL_TAG 2
 #define COLUMN_WIDTH 130.f
@@ -19,6 +20,12 @@
     if (self) {
         self.backgroundColor = [UIColor colorWithWhite:0.9333f alpha:1.0f];
     
+        // Background view
+        _backView = [[UIView alloc] initWithFrame:CGRectZero];
+        _backView.backgroundColor = UIColorFromRGB(0xcec6cd);
+        [self.contentView addSubview:_backView];
+        
+        // Main image view
         _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self.contentView addSubview:_imageView];
         
@@ -35,6 +42,7 @@
 
 - (void)dealloc {
     [_imageView release];
+    [_backView release];
     
     [super dealloc];
 }
@@ -52,14 +60,20 @@
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
     CGRect imageFrame = CGRectMake(IMAGE_INSET, IMAGE_INSET, layoutAttributes.size.width - 2 * IMAGE_INSET, layoutAttributes.size.height - 2 * IMAGE_INSET);
     self.imageView.frame = imageFrame;
+    
+    CGFloat o = 1.f;
+    CGRect backViewFrame = CGRectMake(IMAGE_INSET - o, IMAGE_INSET - o, layoutAttributes.size.width - (2 * (IMAGE_INSET - o)), layoutAttributes.size.height - (2 * (IMAGE_INSET - o)));
+    self.backView.frame = backViewFrame;
 }
 
 - (void)prepareForReuse {
     [self.imageView setImage:nil];
 }
 
-- (void)setSelected:(BOOL)selected {
+- (void)setHighlighted:(BOOL)highlighted {
+    [super setHighlighted:highlighted];
     
+    self.imageView.alpha = highlighted ? 0.70f : 1.f;
 }
 
 /*

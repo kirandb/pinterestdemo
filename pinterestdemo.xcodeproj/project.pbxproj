@@ -126,6 +126,7 @@
 		34146C0D16956DC1002D3C40 /* navbar_gradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_gradient@2x.png"; sourceTree = "<group>"; };
 		34146C1A169570F2002D3C40 /* NSUserDefaults+BMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+BMAdditions.h"; sourceTree = "<group>"; };
 		34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+BMAdditions.m"; sourceTree = "<group>"; };
+		34146C21169578E4002D3C40 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +276,7 @@
 			children = (
 				34146C1A169570F2002D3C40 /* NSUserDefaults+BMAdditions.h */,
 				34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */,
+				34146C21169578E4002D3C40 /* helpers.h */,
 			);
 			name = Misc;
 			sourceTree = "<group>";

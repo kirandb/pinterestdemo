@@ -13,6 +13,7 @@
 @interface BMGridCell : UICollectionViewCell
 
 @property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIView *backView;
 
 - (void)setText:(NSString *)text;
 - (void)setImage:(NSString *)imageName;

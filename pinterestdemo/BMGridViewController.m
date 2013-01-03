@@ -259,6 +259,15 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
             layout.pinchedCellPath1 = indexPath1;
             layout.pinchedCellPath2 = indexPath2;
+            
+            // Highlight all cells in range
+            for (int i = range.location; i < range.length + range.location; i++) {
+                NSIndexPath *path = [NSIndexPath indexPathForItem:i inSection:0];
+                BMGridCell *cell = (BMGridCell *)[self.collectionView cellForItemAtIndexPath:path];
+                [UIView animateWithDuration:0.25f animations:^{
+                    [cell setHighlighted:YES];
+                }];
+            }
         }
         
     } else if (gr.state == UIGestureRecognizerStateChanged) {
@@ -270,6 +279,13 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 //            layout.pinchedCellScale = gr.scale;
 //        }
     } else if (gr.state == UIGestureRecognizerStateEnded) {
+        // Deselect all cells
+        for (BMGridCell *cell in self.collectionView.visibleCells) {
+            [UIView animateWithDuration:0.25f animations:^{
+                cell.highlighted = NO;
+            }];
+        }
+        
         // Are we pinching out or in?
         BOOL pinchOut = gr.scale > 1 ? YES : NO;
         
