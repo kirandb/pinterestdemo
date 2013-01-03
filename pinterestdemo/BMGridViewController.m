@@ -10,6 +10,7 @@
 #import "BMGridCell.h"
 #import "BMPinModel.h"
 #import "BMScrollLayout.h"
+#import "BMProperStackLayout.h"
 #import "BMStackLayout.h"
 #import <ImageIO/ImageIO.h> 
 #import <QuartzCore/QuartzCore.h>
@@ -207,6 +208,9 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         CGFloat available_height = self.view.bounds.size.height * 0.9f;
         available_height = MIN(height, available_height);
         size = CGSizeMake(width * available_height / height, available_height);
+    } else if ([collectionViewLayout isKindOfClass:[BMProperStackLayout class]]) {
+        CGFloat fixed_height = 250.f;
+        size = CGSizeMake(width * fixed_height / height, fixed_height);
     }
     
     return size;
@@ -278,7 +282,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)gr {
     if (gr.state == UIGestureRecognizerStateBegan) {
         // Filter the datasource if we pinch (2 touches) and if we are currently in grid mode.
-        if (gr.numberOfTouches == 2 && [self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+        if (gr.numberOfTouches == 2) {
             // Get the touch locations
             CGPoint touch1 = [gr locationOfTouch:0 inView:self.collectionView];
             CGPoint touch2 = [gr locationOfTouch:1 inView:self.collectionView];
@@ -290,10 +294,11 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             range.location = indexPath1.item <= indexPath2.item ? indexPath1.item : indexPath2.item;
             range.length = abs(indexPath1.item - indexPath2.item) + 1;
             self.selectedCells = [NSIndexSet indexSetWithIndexesInRange:range];
-            
-            BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
-            layout.pinchedCellPath1 = indexPath1;
-            layout.pinchedCellPath2 = indexPath2;
+
+            // Disabled pinch animation for now -- looks awkward.
+            //            BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
+            //            layout.pinchedCellPath1 = indexPath1;
+            //            layout.pinchedCellPath2 = indexPath2;
             
             // Highlight all cells in range
             for (int i = range.location; i < range.length + range.location; i++) {
@@ -308,12 +313,13 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         
     } else if (gr.state == UIGestureRecognizerStateChanged) {
         // Disabled pinch animation for now -- looks awkward.
-//        if (gr.numberOfTouches == 2 && [self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
-//            BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
-//            layout.pinchedCellCenter1 = [gr locationOfTouch:0 inView:self.collectionView];
-//            layout.pinchedCellCenter2 = [gr locationOfTouch:1 inView:self.collectionView];
-//            layout.pinchedCellScale = gr.scale;
-//        }
+        //        if (gr.numberOfTouches == 2 && [self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+        //            BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
+        //            layout.pinchedCellCenter1 = [gr locationOfTouch:0 inView:self.collectionView];
+        //            layout.pinchedCellCenter2 = [gr locationOfTouch:1 inView:self.collectionView];
+        //            layout.pinchedCellScale = gr.scale;
+        //        }
+        
     } else if (gr.state == UIGestureRecognizerStateEnded) {
         // Deselect all cells
         for (BMGridCell *cell in self.collectionView.visibleCells) {
@@ -327,24 +333,25 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         
         // Toggle back-and-forth between grid and stack layout
         if ([self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
-            // Switch to ScrollLayout, only on pinch out
-            if (!pinchOut) {
-                return;
-            }
-            
             if (self.selectedCells) {
                 self.dataArray = [self.dataArray objectsAtIndexes:self.selectedCells];
             }
             [self.collectionView reloadData];
 
-            BMScrollLayout *scrollLayout = [[[BMScrollLayout alloc] init] autorelease];
-            [self.collectionView setCollectionViewLayout:scrollLayout animated:YES];
+            if (!pinchOut) {
+                // Switch to a proper stack, on pinch in
+                BMProperStackLayout *properStackLayout = [[BMProperStackLayout alloc] initWithRect:self.view.bounds];
+                [self.collectionView setCollectionViewLayout:properStackLayout animated:YES];
+                [properStackLayout release];
+                
+            } else {
+                // Switch to ScrollLayout, on pinch out
+                BMScrollLayout *scrollLayout = [[BMScrollLayout alloc] init];
+                [self.collectionView setCollectionViewLayout:scrollLayout animated:YES];
+                [scrollLayout release];
+            }
         } else {
             // Switch back to GridLayout (always cached), only on pinch in
-            if (pinchOut) {
-                return;
-            }
-            
             [self loadData];
             [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
         }
@@ -362,10 +369,12 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         [stackLayout release];
         
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
-    } else if ([collectionView.collectionViewLayout isKindOfClass:[BMStackLayout class]]) {
+        
+    } else if ([collectionView.collectionViewLayout isKindOfClass:[BMStackLayout class]] || ([collectionView.collectionViewLayout isKindOfClass:[BMProperStackLayout class]])) {
         // Switch back to the grid layout
         [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
-    }
+        [self loadData];
+    } 
 }
 
 @end

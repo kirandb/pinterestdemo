@@ -38,6 +38,7 @@
 		34146C1C169570F2002D3C40 /* NSUserDefaults+BMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */; };
 		34146C271696049B002D3C40 /* BMScrollLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C261696049B002D3C40 /* BMScrollLayout.m */; };
 		34146C2A169604E5002D3C40 /* BMStackLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C29169604E5002D3C40 /* BMStackLayout.m */; };
+		3464854516964138005C27ED /* BMProperStackLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3464854416964138005C27ED /* BMProperStackLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,8 @@
 		34146C261696049B002D3C40 /* BMScrollLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMScrollLayout.m; path = pinterestdemo/BMScrollLayout.m; sourceTree = "<group>"; };
 		34146C28169604E4002D3C40 /* BMStackLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMStackLayout.h; path = pinterestdemo/BMStackLayout.h; sourceTree = "<group>"; };
 		34146C29169604E5002D3C40 /* BMStackLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMStackLayout.m; path = pinterestdemo/BMStackLayout.m; sourceTree = "<group>"; };
+		3464854316964138005C27ED /* BMProperStackLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMProperStackLayout.h; sourceTree = "<group>"; };
+		3464854416964138005C27ED /* BMProperStackLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMProperStackLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +261,8 @@
 				34044CC416940461004837C6 /* BMGridLayout.m */,
 				34146C28169604E4002D3C40 /* BMStackLayout.h */,
 				34146C29169604E5002D3C40 /* BMStackLayout.m */,
+				3464854316964138005C27ED /* BMProperStackLayout.h */,
+				3464854416964138005C27ED /* BMProperStackLayout.m */,
 			);
 			name = Layouts;
 			path = ..;
@@ -359,6 +364,7 @@
 				34146C1C169570F2002D3C40 /* NSUserDefaults+BMAdditions.m in Sources */,
 				34146C271696049B002D3C40 /* BMScrollLayout.m in Sources */,
 				34146C2A169604E5002D3C40 /* BMStackLayout.m in Sources */,
+				3464854516964138005C27ED /* BMProperStackLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
