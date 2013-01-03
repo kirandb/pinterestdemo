@@ -9,17 +9,19 @@
 #import "BMGridViewController.h"
 #import "BMGridCell.h"
 #import "BMPinModel.h"
+#import "BMStackLayout.h"
 #import <ImageIO/ImageIO.h> 
 #import <QuartzCore/QuartzCore.h>
 
 
-#define COLUMN_WIDTH 130.f
+#define GRID_COLUMN_WIDTH 130.f
 
 static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 
 @interface BMGridViewController ()
 - (void)handleLongPressGesture:(UILongPressGestureRecognizer *)gr;
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)gr;
+- (void)loadData;
 @end
 
 @implementation BMGridViewController
@@ -36,6 +38,8 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 - (void)dealloc {
     [_dataArray release];
     [_collectionView release];
+    [_gridLayout release];
+    [_selectedCells release];
     
     [super dealloc];
 }
@@ -44,17 +48,16 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 
 - (void)loadView {
     // Create collection view layout
-    BMGridLayout *layout = [[BMGridLayout alloc] initWithColumnWidth:COLUMN_WIDTH];
+    _gridLayout = [[BMGridLayout alloc] initWithColumnWidth:GRID_COLUMN_WIDTH];
     
     // Create collection view
     CGRect screen = [[UIScreen mainScreen] applicationFrame];
-    _collectionView = [[UICollectionView alloc] initWithFrame:screen collectionViewLayout:layout];
+    _collectionView = [[UICollectionView alloc] initWithFrame:screen collectionViewLayout:_gridLayout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     _collectionView.backgroundColor = [UIColor darkGrayColor];
     [_collectionView registerClass:[BMGridCell class] forCellWithReuseIdentifier:BMGRID_CELL_ID];
                        
-    [layout release];
     self.view = _collectionView;
 }
 
@@ -74,19 +77,13 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         }
     }
     [self.view addGestureRecognizer:longPressGestureRecognizer];
+    [longPressGestureRecognizer release];
     
     UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
     [self.view addGestureRecognizer:pinchGestureRecognizer];
     [pinchGestureRecognizer release];
     
-    // Load pins (do this 5x times so we have more images to play with)
-    NSUInteger multiplier = 5;
-    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[BMPinModel imageNames] count] * multiplier];
-    for (int i = 0; i < multiplier; i++) {
-        [tempArray addObjectsFromArray:[BMPinModel imageNames]];
-    }
-    self.dataArray = [NSArray arrayWithArray:tempArray];
-    [tempArray release];
+    [self loadData];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -99,6 +96,21 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Data loading
+
+- (void)loadData {
+    // Load pins (do this 5x times so we have more images to play with)
+    NSUInteger multiplier = 5;
+    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[BMPinModel imageNames] count] * multiplier];
+    for (int i = 0; i < multiplier; i++) {
+        [tempArray addObjectsFromArray:[BMPinModel imageNames]];
+    }
+    self.dataArray = [NSArray arrayWithArray:tempArray];
+    [tempArray release];
+    
+    [self.collectionView reloadData];
+}
+
 #pragma mark - BMGridLayout delegate/datasource methods
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -106,8 +118,6 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
     NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
     NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
     CGFloat width = 0.f;
@@ -130,7 +140,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     CFRelease(imageSource);
 
     // Return the image height scaled by the column width to maintain the correct aspect ratio.
-    return height * COLUMN_WIDTH / width;
+    return height * GRID_COLUMN_WIDTH / width;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -149,6 +159,36 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     [data insertObject:fromItem atIndex:toIndexPath.item];
     self.dataArray = [NSArray arrayWithArray:data];
     [data release];
+}
+
+#pragma mark - UICollectionViewFlowLayout delegate handlers
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
+    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
+    CGFloat width = 0.f;
+    CGFloat height = 0.f;
+    
+    // Get the image dimensions without loading the image into memory
+    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
+    if (imageSource == NULL) { // Error loading image ...
+        NSLog(@"Error loading image at URL: %@", imageFileURL);
+        return CGSizeMake(0.f, 0.f);
+    }
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString *)kCGImageSourceShouldCache, nil];
+    
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, (CFDictionaryRef)options);
+    if (imageProperties) {
+        width = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth) floatValue];
+        height = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight) floatValue];
+        CFRelease(imageProperties);
+    }
+    CFRelease(imageSource);
+    
+    // Return the image height scaled by the column width to maintain the correct aspect ratio.
+    // For the StackLayout, we take 95% of the available screen width as the column width.
+    CGFloat column_width = self.view.bounds.size.width * 0.95;
+    return CGSizeMake(column_width, height * column_width / width);
 }
 
 #pragma mark - Gesture recognizer handlers
@@ -207,18 +247,41 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 }
 
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)gr {
-    BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
-    
     if (gr.state == UIGestureRecognizerStateBegan) {
-        CGPoint initialPoint = [gr locationInView:self.collectionView];
-        NSIndexPath *pinchedCellPath = [self.collectionView indexPathForItemAtPoint:initialPoint];
-        layout.pinchedCellPath = pinchedCellPath;
+        // Filter the datasource if we pinch (2 touches) and if we are currently in grid mode.
+        if (gr.numberOfTouches == 2 && [self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+            // Get the touch locations
+            CGPoint touch1 = [gr locationOfTouch:0 inView:self.collectionView];
+            CGPoint touch2 = [gr locationOfTouch:1 inView:self.collectionView];
+            
+            // Get the indexPaths in between the touchpoints
+            NSIndexPath *indexPath1 = [self.collectionView indexPathForItemAtPoint:touch1];
+            NSIndexPath *indexPath2 = [self.collectionView indexPathForItemAtPoint:touch2];
+            NSRange range;
+            range.location = indexPath1.item <= indexPath2.item ? indexPath1.item : indexPath2.item;
+            range.length = abs(indexPath1.item - indexPath2.item) + 1;
+            self.selectedCells = [NSIndexSet indexSetWithIndexesInRange:range];
+        }
         
     } else if (gr.state == UIGestureRecognizerStateChanged) {
-        layout.pinchedCellScale = gr.scale;
-        layout.pinchedCellCenter = [gr locationInView:self.collectionView];
+//        layout.pinchedCellScale = gr.scale;
+//        layout.pinchedCellCenter = [gr locationInView:self.collectionView];
     } else if (gr.state == UIGestureRecognizerStateEnded) {
-        
+        // Toggle back-and-forth between grid and stack layout
+        if ([self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+            // Switch to StackLayout
+            if (self.selectedCells) {
+                self.dataArray = [self.dataArray objectsAtIndexes:self.selectedCells];
+            }
+            [self.collectionView reloadData];
+
+            BMStackLayout *stackLayout = [[[BMStackLayout alloc] init] autorelease];
+            [self.collectionView setCollectionViewLayout:stackLayout animated:YES];
+        } else {
+            // Switch back to GridLayout (always cached)
+            [self loadData];
+            [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
+        }
     }
 }
 

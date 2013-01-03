@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "BMGridLayout.h"
 
-@interface BMGridViewController : UIViewController <UICollectionViewDataSource, BMGridLayoutDelegate>
+@interface BMGridViewController : UIViewController <UICollectionViewDataSource, BMGridLayoutDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, retain) UICollectionView *collectionView;
 @property (nonatomic, retain) NSArray *dataArray;
+@property (nonatomic, retain) BMGridLayout *gridLayout;
+@property (nonatomic, retain) NSIndexSet *selectedCells;
 
 @end
