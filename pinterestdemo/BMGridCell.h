@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define IMAGE_INSET 15.f
+
 @interface BMGridCell : UICollectionViewCell
 
 @property (nonatomic, retain) UIImageView *imageView;

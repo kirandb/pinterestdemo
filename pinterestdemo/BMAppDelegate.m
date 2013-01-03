@@ -28,6 +28,18 @@
     [gridViewController release];
     [mainNavigationController release];
     
+    // Customize the UINavBar appearance -> Pinterest look.
+    UIImage *topImage = [UIImage imageNamed:@"navbar_gradient.png"];
+    UIImage *stretchedTopImage = [topImage stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+    [[UINavigationBar appearance] setBackgroundImage:stretchedTopImage forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor colorWithWhite:0.64f alpha:1.0f], UITextAttributeTextColor,
+      [UIColor whiteColor], UITextAttributeTextShadowColor,
+      [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
+      [UIFont boldSystemFontOfSize:20.f], UITextAttributeFont,
+      nil]];
+    
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

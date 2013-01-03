@@ -13,8 +13,7 @@
 #import <ImageIO/ImageIO.h> 
 #import <QuartzCore/QuartzCore.h>
 
-
-#define GRID_COLUMN_WIDTH 130.f
+#define GRID_COLUMN_WIDTH 235.f
 
 static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 
@@ -55,7 +54,8 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     _collectionView = [[UICollectionView alloc] initWithFrame:screen collectionViewLayout:_gridLayout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
-    _collectionView.backgroundColor = [UIColor darkGrayColor];
+    _collectionView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
+
     [_collectionView registerClass:[BMGridCell class] forCellWithReuseIdentifier:BMGRID_CELL_ID];
                        
     self.view = _collectionView;
@@ -261,15 +261,31 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             range.location = indexPath1.item <= indexPath2.item ? indexPath1.item : indexPath2.item;
             range.length = abs(indexPath1.item - indexPath2.item) + 1;
             self.selectedCells = [NSIndexSet indexSetWithIndexesInRange:range];
+            
+            BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
+            layout.pinchedCellPath1 = indexPath1;
+            layout.pinchedCellPath2 = indexPath2;
         }
         
     } else if (gr.state == UIGestureRecognizerStateChanged) {
-//        layout.pinchedCellScale = gr.scale;
-//        layout.pinchedCellCenter = [gr locationInView:self.collectionView];
+        // Disabled pinch animation for now -- looks awkward.
+//        if (gr.numberOfTouches == 2 && [self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
+//            BMGridLayout *layout = (BMGridLayout *)self.collectionView.collectionViewLayout;
+//            layout.pinchedCellCenter1 = [gr locationOfTouch:0 inView:self.collectionView];
+//            layout.pinchedCellCenter2 = [gr locationOfTouch:1 inView:self.collectionView];
+//            layout.pinchedCellScale = gr.scale;
+//        }
     } else if (gr.state == UIGestureRecognizerStateEnded) {
+        // Are we pinching out or in?
+        BOOL pinchOut = gr.scale > 1 ? YES : NO;
+        
         // Toggle back-and-forth between grid and stack layout
         if ([self.collectionView.collectionViewLayout isKindOfClass:[BMGridLayout class]]) {
-            // Switch to StackLayout
+            // Switch to StackLayout, only on pinch out
+            if (!pinchOut) {
+                return;
+            }
+            
             if (self.selectedCells) {
                 self.dataArray = [self.dataArray objectsAtIndexes:self.selectedCells];
             }
@@ -278,7 +294,11 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             BMStackLayout *stackLayout = [[[BMStackLayout alloc] init] autorelease];
             [self.collectionView setCollectionViewLayout:stackLayout animated:YES];
         } else {
-            // Switch back to GridLayout (always cached)
+            // Switch back to GridLayout (always cached), only on pinch in
+            if (pinchOut) {
+                return;
+            }
+            
             [self loadData];
             [self.collectionView setCollectionViewLayout:self.gridLayout animated:YES];
         }

@@ -17,16 +17,17 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:0.725490 green:0.729412 blue:0.772549 alpha:1];
+        self.backgroundColor = [UIColor colorWithWhite:0.9333f alpha:1.0f];
     
-        _imageView = [[UIImageView alloc] initWithFrame:frame];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self.contentView addSubview:_imageView];
         
+        // Label for debugging purposes (tracks indexPath)
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.f, 0.f, 100.f, 25.f)];
         label.tag = LABEL_TAG;
         label.backgroundColor = [UIColor clearColor];
         label.textAlignment = NSTextAlignmentCenter;
-        [self.contentView addSubview:label];
+//        [self.contentView addSubview:label];
         [label release];
     }
     return self;
@@ -49,11 +50,16 @@
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    self.imageView.frame = CGRectMake(0.f, 0.f, layoutAttributes.size.width, layoutAttributes.size.height);
+    CGRect imageFrame = CGRectMake(IMAGE_INSET, IMAGE_INSET, layoutAttributes.size.width - 2 * IMAGE_INSET, layoutAttributes.size.height - 2 * IMAGE_INSET);
+    self.imageView.frame = imageFrame;
 }
 
 - (void)prepareForReuse {
     [self.imageView setImage:nil];
+}
+
+- (void)setSelected:(BOOL)selected {
+    
 }
 
 /*

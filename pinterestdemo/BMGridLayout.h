@@ -18,16 +18,17 @@
 @interface BMGridLayout : UICollectionViewLayout
 
 @property (nonatomic, assign) CGFloat columnWidth;
-@property (nonatomic, assign) NSUInteger numberOfColumns;
 
 // Long press ivars
 @property (nonatomic, retain) NSIndexPath *pressedCellPath;
 @property (nonatomic, assign) CGPoint pressedCellCenter;
 @property (nonatomic, retain) UIView *activeCellView;
 
-@property (nonatomic, retain) NSIndexPath *pinchedCellPath;
+@property (nonatomic, retain) NSIndexPath *pinchedCellPath1;
+@property (nonatomic, retain) NSIndexPath *pinchedCellPath2;
+@property (nonatomic, assign) CGPoint pinchedCellCenter1;
+@property (nonatomic, assign) CGPoint pinchedCellCenter2;
 @property (nonatomic, assign) CGFloat pinchedCellScale;
-@property (nonatomic, assign) CGPoint pinchedCellCenter;
 
 - (void)applyLongPressToLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;
 - (void)applyPinchToLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;

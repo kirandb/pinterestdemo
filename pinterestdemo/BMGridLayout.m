@@ -9,6 +9,8 @@
 #import "BMGridLayout.h"
 #import "QuartzCore/QuartzCore.h"
 
+#define EDGE_INSET 15.f
+
 @interface BMGridLayout ()
 
 @property (nonatomic, assign) CGFloat interItemSpacing;
@@ -34,9 +36,7 @@
     self = [super init];
     if (self) {
         // Sensible defaults
-        self.numberOfColumns = 3;
-        self.columnWidth = 140.f;
-        self.sectionInset = UIEdgeInsetsMake(9.f, 9.f, 9.f, 9.f);
+        self.sectionInset = UIEdgeInsetsMake(EDGE_INSET, EDGE_INSET, EDGE_INSET, EDGE_INSET);
         
         self.columnWidth = columnWidth;
     }
@@ -48,7 +48,8 @@
     [_layoutAttributes release];
     [_columnHeights release];
     [_pressedCellPath release];
-    [_pinchedCellPath release];
+    [_pinchedCellPath1 release];
+    [_pinchedCellPath2 release];
     [_activeCellView release];
     
     [super dealloc];
@@ -107,6 +108,7 @@
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewLayoutAttributes *attributes = self.layoutAttributes[indexPath.item];
     [self applyLongPressToLayoutAttributes:attributes];
+//    [self applyPinchToLayoutAttributes:attributes];
     return attributes;
 }
 
@@ -120,6 +122,7 @@
     
     for (UICollectionViewLayoutAttributes *cellAttributes in filteredAttributes) {
         [self applyLongPressToLayoutAttributes:cellAttributes];
+//        [self applyPinchToLayoutAttributes:cellAttributes];
     }
     
     return filteredAttributes;
@@ -203,11 +206,16 @@
 #pragma mark - Pinch touch methods
 
 - (void)applyPinchToLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    if ([layoutAttributes.indexPath isEqual:self.pinchedCellPath]) {
+    if ([layoutAttributes.indexPath isEqual:self.pinchedCellPath1]) {
         layoutAttributes.transform3D = CATransform3DMakeScale(self.pinchedCellScale, self.pinchedCellScale, 1.0);
-        layoutAttributes.center = self.pinchedCellCenter;
+        layoutAttributes.center = self.pinchedCellCenter1;
+        layoutAttributes.zIndex = 1;
+    } else if ([layoutAttributes.indexPath isEqual:self.pinchedCellPath2]) {
+        layoutAttributes.transform3D = CATransform3DMakeScale(self.pinchedCellScale, self.pinchedCellScale, 1.0);
+        layoutAttributes.center = self.pinchedCellCenter2;
         layoutAttributes.zIndex = 1;
     }
+
 }
 
 - (void)setPinchedCellScale:(CGFloat)pinchedCellScale {
@@ -215,8 +223,13 @@
     [self invalidateLayout];
 }
 
-- (void)setPinchedCellCenter:(CGPoint)pinchedCellCenter {
-    _pinchedCellCenter = pinchedCellCenter;
+- (void)setPinchedCellCenter1:(CGPoint)pinchedCellCenter1 {
+    _pinchedCellCenter1 = pinchedCellCenter1;
+    [self invalidateLayout];
+}
+
+- (void)setPinchedCellCenter2:(CGPoint)pinchedCellCenter2 {
+    _pinchedCellCenter2 = pinchedCellCenter2;
     [self invalidateLayout];
 }
 
