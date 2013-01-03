@@ -11,6 +11,7 @@
 
 #define LABEL_TAG 2
 #define COLUMN_WIDTH 130.f
+#define BACKCOLOR_WHITE 0.9333f
 
 @implementation BMGridCell
 
@@ -18,7 +19,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithWhite:0.9333f alpha:1.0f];
+        self.backgroundColor = [UIColor colorWithWhite:BACKCOLOR_WHITE alpha:1.0f];
     
         // Background view
         _backView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -74,6 +75,14 @@
     [super setHighlighted:highlighted];
     
     self.imageView.alpha = highlighted ? 0.70f : 1.f;
+}
+
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    UIColor *selectedColor = [UIColor colorWithWhite:0.5f alpha:1.f];
+    
+    self.backgroundColor = selected ? selectedColor : [UIColor colorWithWhite:BACKCOLOR_WHITE alpha:1.f];
+    self.alpha = selected ? 0.7f : 1.f;
 }
 
 /*

@@ -265,7 +265,8 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
                 NSIndexPath *path = [NSIndexPath indexPathForItem:i inSection:0];
                 BMGridCell *cell = (BMGridCell *)[self.collectionView cellForItemAtIndexPath:path];
                 [UIView animateWithDuration:0.25f animations:^{
-                    [cell setHighlighted:YES];
+                    cell.highlighted = NO;
+                    cell.selected = YES;
                 }];
             }
         }
@@ -282,7 +283,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         // Deselect all cells
         for (BMGridCell *cell in self.collectionView.visibleCells) {
             [UIView animateWithDuration:0.25f animations:^{
-                cell.highlighted = NO;
+                cell.selected = NO;
             }];
         }
         

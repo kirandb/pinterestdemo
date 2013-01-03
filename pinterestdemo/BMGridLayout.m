@@ -188,7 +188,7 @@
                           layout:self
            moveItemFromIndexPath:previousIndexPath
                      toIndexPath:selectedIndexPath];
-    
+        
         [self.collectionView performBatchUpdates:^{
             [self.collectionView deleteItemsAtIndexPaths:@[previousIndexPath]];
             [self.collectionView insertItemsAtIndexPaths:@[selectedIndexPath]];
