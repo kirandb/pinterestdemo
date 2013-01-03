@@ -83,7 +83,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     [self.view addGestureRecognizer:pinchGestureRecognizer];
     [pinchGestureRecognizer release];
     
-    [self loadData];
+    self.dataArray = [BMPinModel storedPinImageList];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -99,15 +99,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 #pragma mark - Data loading
 
 - (void)loadData {
-    // Load pins (do this 5x times so we have more images to play with)
-    NSUInteger multiplier = 5;
-    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[BMPinModel imageNames] count] * multiplier];
-    for (int i = 0; i < multiplier; i++) {
-        [tempArray addObjectsFromArray:[BMPinModel imageNames]];
-    }
-    self.dataArray = [NSArray arrayWithArray:tempArray];
-    [tempArray release];
-    
+    self.dataArray = [BMPinModel pinImageList];
     [self.collectionView reloadData];
 }
 
@@ -216,8 +208,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         [cellImageView release];
         [cellView release];
         
-        [UIView
-         animateWithDuration:0.3
+        [UIView animateWithDuration:0.3
          animations:^{
              cellView.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
              cellView.center = touchPosition;
@@ -242,6 +233,9 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
             [layout.activeCellView removeFromSuperview];
             [self.collectionView reloadData];
             layout.pressedCellPath = nil;
+            
+            // Persist the current data source
+            [BMPinModel storePinImageList:self.dataArray];
         }];
     }
 }

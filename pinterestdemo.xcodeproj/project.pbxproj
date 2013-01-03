@@ -52,9 +52,9 @@
 		34044D0C1694EB10004837C6 /* 249809110550356714_E4d673hy_f.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34044CFA1694EB10004837C6 /* 249809110550356714_E4d673hy_f.jpg */; };
 		34044D0D1694EB10004837C6 /* 258323728595690846_IO4w7Mgq_f.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34044CFB1694EB10004837C6 /* 258323728595690846_IO4w7Mgq_f.jpg */; };
 		34044D1C16954ACD004837C6 /* BMStackLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34044D1B16954ACD004837C6 /* BMStackLayout.m */; };
-		34146C0A16956C4E002D3C40 /* UIImage+ImageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C0916956C4E002D3C40 /* UIImage+ImageWithColor.m */; };
 		34146C0C16956D6C002D3C40 /* navbar_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 34146C0B16956D6C002D3C40 /* navbar_gradient.png */; };
 		34146C0E16956DC1002D3C40 /* navbar_gradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34146C0D16956DC1002D3C40 /* navbar_gradient@2x.png */; };
+		34146C1C169570F2002D3C40 /* NSUserDefaults+BMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,14 +92,14 @@
 		34044CA11693DEA8004837C6 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
 		34044CA21693DEA8004837C6 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		34044CA31693DEA8004837C6 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
-		34044CB11693E40D004837C6 /* BMGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMGridViewController.h; sourceTree = "<group>"; };
-		34044CB21693E40D004837C6 /* BMGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMGridViewController.m; sourceTree = "<group>"; };
+		34044CB11693E40D004837C6 /* BMGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMGridViewController.h; path = pinterestdemo/BMGridViewController.h; sourceTree = "<group>"; };
+		34044CB21693E40D004837C6 /* BMGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMGridViewController.m; path = pinterestdemo/BMGridViewController.m; sourceTree = "<group>"; };
 		34044CB41693E54B004837C6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		34044CB61693E555004837C6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		34044CB81693F466004837C6 /* BMGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMGridCell.h; sourceTree = "<group>"; };
-		34044CB91693F466004837C6 /* BMGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMGridCell.m; sourceTree = "<group>"; };
-		34044CC316940461004837C6 /* BMGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMGridLayout.h; sourceTree = "<group>"; };
-		34044CC416940461004837C6 /* BMGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMGridLayout.m; sourceTree = "<group>"; };
+		34044CB81693F466004837C6 /* BMGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMGridCell.h; path = pinterestdemo/BMGridCell.h; sourceTree = "<group>"; };
+		34044CB91693F466004837C6 /* BMGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMGridCell.m; path = pinterestdemo/BMGridCell.m; sourceTree = "<group>"; };
+		34044CC316940461004837C6 /* BMGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMGridLayout.h; path = pinterestdemo/BMGridLayout.h; sourceTree = "<group>"; };
+		34044CC416940461004837C6 /* BMGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMGridLayout.m; path = pinterestdemo/BMGridLayout.m; sourceTree = "<group>"; };
 		34044CC616940765004837C6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		34044CE41694D6DE004837C6 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		34044CEA1694EB10004837C6 /* 31666003599584379_Zo93yIid_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 31666003599584379_Zo93yIid_f.jpg; sourceTree = "<group>"; };
@@ -120,12 +120,12 @@
 		34044CF91694EB10004837C6 /* 239605642644595710_hgOTCxCE_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 239605642644595710_hgOTCxCE_f.jpg; sourceTree = "<group>"; };
 		34044CFA1694EB10004837C6 /* 249809110550356714_E4d673hy_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 249809110550356714_E4d673hy_f.jpg; sourceTree = "<group>"; };
 		34044CFB1694EB10004837C6 /* 258323728595690846_IO4w7Mgq_f.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 258323728595690846_IO4w7Mgq_f.jpg; sourceTree = "<group>"; };
-		34044D1A16954ACC004837C6 /* BMStackLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMStackLayout.h; sourceTree = "<group>"; };
-		34044D1B16954ACD004837C6 /* BMStackLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMStackLayout.m; sourceTree = "<group>"; };
-		34146C0816956C4E002D3C40 /* UIImage+ImageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithColor.h"; sourceTree = "<group>"; };
-		34146C0916956C4E002D3C40 /* UIImage+ImageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithColor.m"; sourceTree = "<group>"; };
+		34044D1A16954ACC004837C6 /* BMStackLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMStackLayout.h; path = pinterestdemo/BMStackLayout.h; sourceTree = "<group>"; };
+		34044D1B16954ACD004837C6 /* BMStackLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMStackLayout.m; path = pinterestdemo/BMStackLayout.m; sourceTree = "<group>"; };
 		34146C0B16956D6C002D3C40 /* navbar_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_gradient.png; sourceTree = "<group>"; };
 		34146C0D16956DC1002D3C40 /* navbar_gradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_gradient@2x.png"; sourceTree = "<group>"; };
+		34146C1A169570F2002D3C40 /* NSUserDefaults+BMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+BMAdditions.h"; sourceTree = "<group>"; };
+		34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+BMAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,18 +182,12 @@
 			children = (
 				34044C8F1693DE8D004837C6 /* Vendor */,
 				34146C0616956C3A002D3C40 /* Misc */,
+				34146C1D16957267002D3C40 /* Models */,
+				34146C20169572A0002D3C40 /* Cells */,
+				34146C1F16957298002D3C40 /* Layouts */,
+				34146C1E16957292002D3C40 /* Controllers */,
 				34044C7E1693DCBC004837C6 /* BMAppDelegate.h */,
 				34044C7F1693DCBC004837C6 /* BMAppDelegate.m */,
-				34044C8C1693DD83004837C6 /* BMPinModel.h */,
-				34044C8D1693DD83004837C6 /* BMPinModel.m */,
-				34044CB11693E40D004837C6 /* BMGridViewController.h */,
-				34044CB21693E40D004837C6 /* BMGridViewController.m */,
-				34044D1A16954ACC004837C6 /* BMStackLayout.h */,
-				34044D1B16954ACD004837C6 /* BMStackLayout.m */,
-				34044CC316940461004837C6 /* BMGridLayout.h */,
-				34044CC416940461004837C6 /* BMGridLayout.m */,
-				34044CB81693F466004837C6 /* BMGridCell.h */,
-				34044CB91693F466004837C6 /* BMGridCell.m */,
 				34044CD316942810004837C6 /* Resources */,
 				34044C761693DCBC004837C6 /* Supporting Files */,
 			);
@@ -279,10 +273,51 @@
 		34146C0616956C3A002D3C40 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				34146C0816956C4E002D3C40 /* UIImage+ImageWithColor.h */,
-				34146C0916956C4E002D3C40 /* UIImage+ImageWithColor.m */,
+				34146C1A169570F2002D3C40 /* NSUserDefaults+BMAdditions.h */,
+				34146C1B169570F2002D3C40 /* NSUserDefaults+BMAdditions.m */,
 			);
 			name = Misc;
+			sourceTree = "<group>";
+		};
+		34146C1D16957267002D3C40 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				34044C8C1693DD83004837C6 /* BMPinModel.h */,
+				34044C8D1693DD83004837C6 /* BMPinModel.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		34146C1E16957292002D3C40 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				34044CB11693E40D004837C6 /* BMGridViewController.h */,
+				34044CB21693E40D004837C6 /* BMGridViewController.m */,
+			);
+			name = Controllers;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		34146C1F16957298002D3C40 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				34044D1A16954ACC004837C6 /* BMStackLayout.h */,
+				34044D1B16954ACD004837C6 /* BMStackLayout.m */,
+				34044CC316940461004837C6 /* BMGridLayout.h */,
+				34044CC416940461004837C6 /* BMGridLayout.m */,
+			);
+			name = Layouts;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		34146C20169572A0002D3C40 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				34044CB81693F466004837C6 /* BMGridCell.h */,
+				34044CB91693F466004837C6 /* BMGridCell.m */,
+			);
+			name = Cells;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,7 +422,7 @@
 				34044CBA1693F467004837C6 /* BMGridCell.m in Sources */,
 				34044CC516940461004837C6 /* BMGridLayout.m in Sources */,
 				34044D1C16954ACD004837C6 /* BMStackLayout.m in Sources */,
-				34146C0A16956C4E002D3C40 /* UIImage+ImageWithColor.m in Sources */,
+				34146C1C169570F2002D3C40 /* NSUserDefaults+BMAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import "BMPinModel.h"
+#import "NSUserDefaults+BMAdditions.h"
 
 @implementation BMPinModel
 
@@ -31,6 +32,39 @@
         @"249809110550356714_E4d673hy_f",
         @"153826143492035874_p9DBATmW_f"
     ];
+}
+
+/*
+ * Fetches a list of pin images.
+ */
++ (NSArray *)pinImageList {
+    // Load pins 5x times so we have more images to play with
+    NSUInteger multiplier = 5;
+    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[BMPinModel imageNames] count] * multiplier];
+    for (int i = 0; i < multiplier; i++) {
+        [tempArray addObjectsFromArray:[[self class] imageNames]];
+    }
+    return [NSArray arrayWithArray:tempArray];
+}
+
+/*
+ * Retrieves a list of pin images from NSUserDefaults if it exists.
+ * Fetches a new list otherwise.
+ */
++ (NSArray *)storedPinImageList {
+    NSArray *imageList = [[NSUserDefaults standardUserDefaults] bm_pinList];
+    if ([imageList count] == 0) {
+        imageList = [[self class] pinImageList];
+    }
+    
+    return imageList;
+}
+
+/*
+ * Store a list of pin images in NSUserDefaults.
+ */
++ (void)storePinImageList:(NSArray *)imageList {
+    [[NSUserDefaults standardUserDefaults] bm_setPinList:imageList];
 }
 
 @end
