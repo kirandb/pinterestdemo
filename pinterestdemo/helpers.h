@@ -5,3 +5,4 @@
 
 static CGFloat const kNavigationBarPortraitHeight = 44;
 static CGFloat const kNavigationBarLandscapeHeight = 34;
+static NSString *const kImageBaseURL = @"http://media-cdn.pinterest.com/upload/";

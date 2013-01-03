@@ -84,7 +84,8 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     [self.view addGestureRecognizer:pinchGestureRecognizer];
     [pinchGestureRecognizer release];
     
-    self.dataArray = [BMPinModel storedPinImageList];
+//    self.dataArray = [BMPinModel storedPinImageList];
+    self.dataArray = [BMPinModel pinImages];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -100,7 +101,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 #pragma mark - Data loading
 
 - (void)loadData {
-    self.dataArray = [BMPinModel pinImageList];
+    self.dataArray = [BMPinModel pinImages];
     [self.collectionView reloadData];
 }
 
@@ -111,26 +112,34 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout heightForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
-    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
-    CGFloat width = 0.f;
-    CGFloat height = 0.f;
     
-    // Get the image dimensions without loading the image into memory
-    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
-    if (imageSource == NULL) { // Error loading image ...
-        NSLog(@"Error loading image at URL: %@", imageFileURL);
-        return height;
-    }
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString *)kCGImageSourceShouldCache, nil];
+    /*
+     * OLD CODE -- used for static images; we switch to dynamic images from a URL.
+     */
+    //    NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
+    //    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
+    //    CGFloat width = 0.f;
+    //    CGFloat height = 0.f;
+    //    
+    //    // Get the image dimensions without loading the image into memory
+    //    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
+    //    if (imageSource == NULL) { // Error loading image ...
+    //        NSLog(@"Error loading image at URL: %@", imageFileURL);
+    //        return height;
+    //    }
+    //    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString *)kCGImageSourceShouldCache, nil];
+    //    
+    //    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, (CFDictionaryRef)options);
+    //    if (imageProperties) {
+    //        width = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth) floatValue];
+    //        height = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight) floatValue];
+    //        CFRelease(imageProperties);
+    //    }
+    //    CFRelease(imageSource);
     
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, (CFDictionaryRef)options);
-    if (imageProperties) {
-        width = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth) floatValue];
-        height = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight) floatValue];
-        CFRelease(imageProperties);
-    }
-    CFRelease(imageSource);
+    NSArray *imageSize = [[self.dataArray objectAtIndex:indexPath.item] objectForKey:@"size"];
+    CGFloat width = [[imageSize objectAtIndex:0] floatValue];
+    CGFloat height = [[imageSize objectAtIndex:1] floatValue];
 
     // Return the image height scaled by the column width to maintain the correct aspect ratio.
     return height * GRID_COLUMN_WIDTH / width;
@@ -139,7 +148,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BMGridCell *cell = (BMGridCell *)[collectionView dequeueReusableCellWithReuseIdentifier:BMGRID_CELL_ID forIndexPath:indexPath];
 
-    [cell setImage:[self.dataArray objectAtIndex:indexPath.item]];
+    [cell setImage:[[self.dataArray objectAtIndex:indexPath.item] objectForKey:@"name"]];
     cell.text = [NSString stringWithFormat:@"%i %i", indexPath.section, indexPath.row];
     
     return cell;
@@ -157,26 +166,34 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
 #pragma mark - UICollectionViewFlowLayout delegate handlers
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
-    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
-    CGFloat width = 0.f;
-    CGFloat height = 0.f;
+    /*
+     * OLD CODE -- used for static images; we switch to dynamic images from a URL.
+     */
+    //    NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
+    //    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
+    //    CGFloat width = 0.f;
+    //    CGFloat height = 0.f;
+    //    
+    //    // Get the image dimensions without loading the image into memory
+    //    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
+    //    if (imageSource == NULL) { // Error loading image ...
+    //        NSLog(@"Error loading image at URL: %@", imageFileURL);
+    //        return CGSizeMake(0.f, 0.f);
+    //    }
+    //    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString *)kCGImageSourceShouldCache, nil];
+    //    
+    //    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, (CFDictionaryRef)options);
+    //    if (imageProperties) {
+    //        width = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth) floatValue];
+    //        height = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight) floatValue];
+    //        CFRelease(imageProperties);
+    //    }
+    //    CFRelease(imageSource);
     
-    // Get the image dimensions without loading the image into memory
-    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
-    if (imageSource == NULL) { // Error loading image ...
-        NSLog(@"Error loading image at URL: %@", imageFileURL);
-        return CGSizeMake(0.f, 0.f);
-    }
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString *)kCGImageSourceShouldCache, nil];
     
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, (CFDictionaryRef)options);
-    if (imageProperties) {
-        width = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth) floatValue];
-        height = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight) floatValue];
-        CFRelease(imageProperties);
-    }
-    CFRelease(imageSource);
+    NSArray *imageSize = [[self.dataArray objectAtIndex:indexPath.item] objectForKey:@"size"];
+    CGFloat width = [[imageSize objectAtIndex:0] floatValue];
+    CGFloat height = [[imageSize objectAtIndex:1] floatValue];
     
     // Return the image height scaled by the column width to maintain the correct aspect ratio.
     CGSize size;

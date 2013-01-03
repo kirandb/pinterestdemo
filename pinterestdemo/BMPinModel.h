@@ -10,8 +10,7 @@
 
 @interface BMPinModel : NSObject
 
-+ (NSArray *)imageNames;
-+ (NSArray *)pinImageList;
++ (NSArray *)pinImages;
 + (NSArray *)storedPinImageList;
 + (void)storePinImageList:(NSArray *)imageList;
 
