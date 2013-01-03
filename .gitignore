@@ -1,0 +1,8 @@
+*.un~
+.DS_Store
+*.swp
+xcuserdata
+*~.nib
+.xcodeproj/ !*.xcodeproj/project.pbxproj
+project.xcworkspace/
+*.orig
