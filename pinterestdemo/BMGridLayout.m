@@ -171,24 +171,6 @@
     if ([layoutAttributes.indexPath isEqual:self.pressedCellPath]) {
         layoutAttributes.hidden = YES;
         self.activeCellView.center = self.pressedCellCenter;
-//        layoutAttributes.center = self.pressedCellCenter;
-//        layoutAttributes.zIndex = 1;
-        
-//        id<BMGridLayoutDelegate> delegate = (id<BMGridLayoutDelegate>)self.collectionView.delegate;
-        
-//        NSLog(@"To index path: %@", toIndexPath);
-//        [delegate collectionView:self.collectionView
-//                          layout:self
-//           moveItemFromIndexPath:layoutAttributes.indexPath
-//                     toIndexPath:toIndexPath];
-
-        
-//        [self.collectionView performBatchUpdates:^{
-//            [self.collectionView deleteItemsAtIndexPaths:@[layoutAttributes.indexPath]];
-//            [self.collectionView insertItemsAtIndexPaths:@[toIndexPath]];
-//        } completion:^(BOOL finished) {
-//            // Pass
-//        }];
     }
 }
 
@@ -207,9 +189,7 @@
         [self.collectionView performBatchUpdates:^{
             [self.collectionView deleteItemsAtIndexPaths:@[previousIndexPath]];
             [self.collectionView insertItemsAtIndexPaths:@[selectedIndexPath]];
-        } completion:^(BOOL finished) {
-            // Pass
-        }];
+        } completion:NULL];
         
         self.pressedCellPath = selectedIndexPath;
     }

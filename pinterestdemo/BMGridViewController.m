@@ -79,8 +79,18 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     [self.view addGestureRecognizer:pinchGestureRecognizer];
     [pinchGestureRecognizer release];
     
-    // Load pins
-    self.dataArray = [BMPinModel imageNames];
+    // Load pins (do this 5x times so we have more images to play with)
+    NSUInteger multiplier = 5;
+    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:[[BMPinModel imageNames] count] * multiplier];
+    for (int i = 0; i < multiplier; i++) {
+        [tempArray addObjectsFromArray:[BMPinModel imageNames]];
+    }
+    self.dataArray = [NSArray arrayWithArray:tempArray];
+    [tempArray release];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -99,8 +109,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
     
     
     NSString *imageName = [self.dataArray objectAtIndex:indexPath.item];
-    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName
-                                                                                 ofType:@"jpg"]];
+    NSURL *imageFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"]];
     CGFloat width = 0.f;
     CGFloat height = 0.f;
     
@@ -118,6 +127,7 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         height = [(NSNumber *)CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight) floatValue];
         CFRelease(imageProperties);
     }
+    CFRelease(imageSource);
 
     // Return the image height scaled by the column width to maintain the correct aspect ratio.
     return height * COLUMN_WIDTH / width;
@@ -163,16 +173,15 @@ static NSString *const BMGRID_CELL_ID = @"BMGridCellID";
         UIView *cellView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMinX(selectedCell.frame), CGRectGetMinY(selectedCell.frame), CGRectGetWidth(cellImageView.frame), CGRectGetHeight(cellImageView.frame))];
         [cellView addSubview:cellImageView];
         [self.collectionView addSubview:cellView];
+        [cellImageView release];
+        [cellView release];
         
         [UIView
          animateWithDuration:0.3
          animations:^{
              cellView.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
              cellView.center = touchPosition;
-         }
-         completion:^(BOOL finished) {
-             // Pass
-         }];
+         } completion:NULL];
 
         layout.pressedCellPath = [self.collectionView indexPathForItemAtPoint:touchPosition];
         layout.pressedCellCenter = touchPosition;
