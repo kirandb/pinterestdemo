@@ -14,6 +14,5 @@
 @property (nonatomic, retain) UICollectionView *collectionView;
 @property (nonatomic, retain) NSArray *dataArray;
 @property (nonatomic, retain) BMGridLayout *gridLayout;
-@property (nonatomic, retain) NSIndexSet *selectedCells;
 
 @end

@@ -24,11 +24,9 @@
 @property (nonatomic, assign) CGPoint pressedCellCenter;
 @property (nonatomic, retain) UIView *activeCellView;
 
-@property (nonatomic, retain) NSIndexPath *pinchedCellPath1;
-@property (nonatomic, retain) NSIndexPath *pinchedCellPath2;
-@property (nonatomic, assign) CGPoint pinchedCellCenter1;
-@property (nonatomic, assign) CGPoint pinchedCellCenter2;
 @property (nonatomic, assign) CGFloat pinchedCellScale;
+@property (nonatomic, retain) NSArray *selectedIndexPaths;
+@property (nonatomic, retain) NSArray *randomFloats;
 
 - (void)applyLongPressToLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;
 - (void)applyPinchToLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;

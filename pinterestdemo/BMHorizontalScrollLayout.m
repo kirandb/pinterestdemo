@@ -1,15 +1,15 @@
 //
-//  BMStackLayout.m
+//  BMHorizontalScrollLayout.m
 //  pinterestdemo
 //
 //  Created by Dick Brouwer on 1/3/13.
 //  Copyright (c) 2013 Beeem Inc. All rights reserved.
 //
 
-#import "BMStackLayout.h"
+#import "BMHorizontalScrollLayout.h"
 #import "helpers.h"
 
-@implementation BMStackLayout
+@implementation BMHorizontalScrollLayout
 
 - (id)init {
     self = [super init];

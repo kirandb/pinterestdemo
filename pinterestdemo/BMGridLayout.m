@@ -48,9 +48,9 @@
     [_layoutAttributes release];
     [_columnHeights release];
     [_pressedCellPath release];
-    [_pinchedCellPath1 release];
-    [_pinchedCellPath2 release];
     [_activeCellView release];
+    [_selectedIndexPaths release];
+    [_randomFloats release];
     
     [super dealloc];
 }
@@ -108,7 +108,7 @@
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewLayoutAttributes *attributes = self.layoutAttributes[indexPath.item];
     [self applyLongPressToLayoutAttributes:attributes];
-//    [self applyPinchToLayoutAttributes:attributes];
+    [self applyPinchToLayoutAttributes:attributes];
     return attributes;
 }
 
@@ -122,7 +122,7 @@
     
     for (UICollectionViewLayoutAttributes *cellAttributes in filteredAttributes) {
         [self applyLongPressToLayoutAttributes:cellAttributes];
-//        [self applyPinchToLayoutAttributes:cellAttributes];
+        [self applyPinchToLayoutAttributes:cellAttributes];
     }
     
     return filteredAttributes;
@@ -204,30 +204,46 @@
 #pragma mark - Pinch touch methods
 
 - (void)applyPinchToLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    if ([layoutAttributes.indexPath isEqual:self.pinchedCellPath1]) {
-        layoutAttributes.transform3D = CATransform3DMakeScale(self.pinchedCellScale, self.pinchedCellScale, 1.0);
-        layoutAttributes.center = self.pinchedCellCenter1;
-        layoutAttributes.zIndex = 1;
-    } else if ([layoutAttributes.indexPath isEqual:self.pinchedCellPath2]) {
-        layoutAttributes.transform3D = CATransform3DMakeScale(self.pinchedCellScale, self.pinchedCellScale, 1.0);
-        layoutAttributes.center = self.pinchedCellCenter2;
-        layoutAttributes.zIndex = 1;
-    }
+    // Apply pinch animation if we have at least 1 selected cell
+    if (self.selectedIndexPaths.count) {
+        CGSize size = self.collectionView.bounds.size;
+        CGFloat heightOffset = self.collectionView.bounds.origin.y;
+        CGPoint stackCenter = CGPointMake(size.width / 2.f, size.height / 2.f + heightOffset);
 
+        if ([self.selectedIndexPaths containsObject:layoutAttributes.indexPath]) {
+            
+            CGFloat xPosition = stackCenter.x + (layoutAttributes.center.x - stackCenter.x) * self.pinchedCellScale;
+            CGFloat yPosition = stackCenter.y + (layoutAttributes.center.y - stackCenter.y) * self.pinchedCellScale;
+            
+            layoutAttributes.center = CGPointMake(xPosition, yPosition);
+            CGFloat angle = 2 * M_PI * 0.2 * ([(NSNumber *)[self.randomFloats objectAtIndex:layoutAttributes.indexPath.item] floatValue] - 0.5) * (1 - self.pinchedCellScale);
+            CATransform3D rotation = CATransform3DMakeRotation(angle, 0.f, 0.f, 1.f);
+            
+            // We need an extra translation to preserve the zIndex (iOS bug): http://stackoverflow.com/questions/12659301/uicollectionview-setlayoutanimated-not-preserving-zindex
+            CATransform3D translation = CATransform3DMakeTranslation(0, 0, 1000 - layoutAttributes.indexPath.item);
+            layoutAttributes.transform3D = CATransform3DConcat(rotation, translation);
+            
+            if ([layoutAttributes.indexPath isEqual:[self.selectedIndexPaths objectAtIndex:0]]) {
+                layoutAttributes.alpha = 1.f;
+            } else {
+                layoutAttributes.alpha = 1 - (0.5 * (1 - self.pinchedCellScale));
+            }
+            
+            layoutAttributes.zIndex = 1000 - layoutAttributes.indexPath.item;
+            
+        } else {
+            layoutAttributes.alpha = self.pinchedCellScale;
+            
+            CGFloat xPosition = layoutAttributes.center.x + (layoutAttributes.center.x - stackCenter.x) * (1 - self.pinchedCellScale);
+            CGFloat yPosition = layoutAttributes.center.y + (layoutAttributes.center.y - stackCenter.y) * (1 - self.pinchedCellScale);
+
+            layoutAttributes.center = CGPointMake(xPosition, yPosition);
+        }
+    }
 }
 
 - (void)setPinchedCellScale:(CGFloat)pinchedCellScale {
     _pinchedCellScale = pinchedCellScale;
-    [self invalidateLayout];
-}
-
-- (void)setPinchedCellCenter1:(CGPoint)pinchedCellCenter1 {
-    _pinchedCellCenter1 = pinchedCellCenter1;
-    [self invalidateLayout];
-}
-
-- (void)setPinchedCellCenter2:(CGPoint)pinchedCellCenter2 {
-    _pinchedCellCenter2 = pinchedCellCenter2;
     [self invalidateLayout];
 }
 
